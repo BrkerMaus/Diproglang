@@ -49,7 +49,7 @@ public class finalProduct : Product
 
 class Sys
 {
-    private const string filePath = "C:\\Users\\emman\\Downloads\\diproglang\\sample.csv";
+    private const string filePath = "C:\\Users\\Default\\Document\Inventory.csv";
 
     public static void addItem(finalProduct item)
     {
