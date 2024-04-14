@@ -399,7 +399,7 @@ class Program
                         string itemName = PromptForItemDetails("Name: ", str => str);
                         double itemPrice = PromptForItemDetails("Price: ", double.Parse);
                         int itemquantity = PromptForItemDetails("Quantity: ", int.Parse);
-                        int rawStock = PromptForItemDetails("Stock([1] Onhand [2] Warehouse: ", int.Parse);
+                        int rawStock = PromptForItemDetails("Stock([1] Onhand [2] Warehouse): ", int.Parse);
                         bool itemPerishable = PromptForItemDetails("Is it perishable? (true/false): ", bool.Parse);
                         string itemStock = "";
                         if (rawStock == 1)
