@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.X509Certificates;
 using System;
 using System.IO;
 using System.Linq;
@@ -51,14 +51,24 @@ class Sys
 {
     private const string filePath = "C:\\Users\\Public\\Documents\\Convenience_Store_Inventory_Management_System.csv";
 
+    public static void csvChecker(string i)
+    {
+        if (!File.Exists(i))
+        {
+            try
+            {
+                using(File.Create(i)) { }
+            }
+            catch
+            {
+                Console.WriteLine($"Error creating CSV file");
+            }
+        }
+    }
     public static void addItem(finalProduct item)
     {
         try
         {
-            if (!File.Exists(filePath))
-            {
-                using (File.Create(filePath)) { }
-            }
 
             using (StreamWriter sw = File.AppendText(filePath))
             {
@@ -77,6 +87,23 @@ class Sys
         try
         {
             string[] lines = File.ReadAllLines(filePath);
+
+            bool idExists = false;
+            foreach (string line in lines)
+            {
+                string[] values = line.Split(',');
+                if (values.Length >= 4 && int.Parse(values[3]) == id)
+                {
+                    idExists = true;
+                    break;
+                }
+            }
+
+            if (!idExists)
+            {
+                Console.WriteLine("Invalid ID. This item does not exist in the inventory.");
+                return;
+            }
 
             while (true)
             {
@@ -127,6 +154,7 @@ class Sys
             Console.WriteLine("Invalid Input");
         }
     }
+
 
     public static void removeItem(int id)
     {
@@ -225,7 +253,6 @@ class Sys
 
 abstract class Menu
 {
-    // Abstract method to display the menu options
     public abstract void DisplayMenu();
 }
 
@@ -321,12 +348,15 @@ class Program
 
         while (true)
         {
+            string filePath = "C:\\Users\\Public\\Documents\\Convenience_Store_Inventory_Management_System.csv";
+            Sys.csvChecker(filePath);
             try
             {
                 storeMenu.DisplayMenu();
 
                 Console.Write("Enter your choice: ");
                 int choice = Convert.ToInt32(Console.ReadLine());
+
 
                 switch (choice)
                 {
@@ -382,13 +412,13 @@ class Program
                         Sys.showInv();
                         break;
                     default:
-                        Console.WriteLine("\n[ Invalid choice! Please enter a valid option. ]");
+                        Console.WriteLine("\n[ Invalid choice!]");
                         break;
                 }
             }
             catch (FormatException)
             {
-                Console.WriteLine("\n[ Invalid input! Please enter a valid number. ]");
+                Console.WriteLine("\n[ Invalid input!]");
             }
             catch (Exception ex)
             {
