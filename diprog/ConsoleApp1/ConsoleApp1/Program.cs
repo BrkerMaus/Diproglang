@@ -200,6 +200,10 @@ class Sys
                 return;
             }
 
+            int totalStock = 0;
+            int totalSpoilage = 0;
+            int totalRestock = 0;
+
             foreach (string line in inv)
             {
                 string[] values = line.Split(',');
@@ -217,8 +221,29 @@ class Sys
                     p.DisplayProductInfo();
 
                     Console.WriteLine();
+
+                    // Update totals based on stock type
+                    switch (stock)
+                    {
+                        case "Onhand":
+                            totalStock += quantity;
+                            break;
+                        case "Spoilage":
+                            totalSpoilage += quantity;
+                            break;
+                        case "Warehouse":
+                            totalRestock += quantity;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+
+            // Display total stock, spoilage, and restock numbers
+            Console.WriteLine($"Total Stock: {totalStock}");
+            Console.WriteLine($"Total Spoilage: {totalSpoilage}");
+            Console.WriteLine($"Total Restock: {totalRestock}");
         }
         catch (Exception ex)
         {
@@ -374,17 +399,25 @@ class Program
                         string itemName = PromptForItemDetails("Name: ", str => str);
                         double itemPrice = PromptForItemDetails("Price: ", double.Parse);
                         int itemquantity = PromptForItemDetails("Quantity: ", int.Parse);
+                        int rawStock = PromptForItemDetails("Stock([1] Onhand [2] Warehouse: ", int.Parse);
                         bool itemPerishable = PromptForItemDetails("Is it perishable? (true/false): ", bool.Parse);
+                        string itemStock = "";
+                        if (rawStock == 1)
+                        {
+                            itemStock = "Onhand";
+                        }
+                        else if (rawStock == 2)
+                        {
+                            itemStock = "Warehouse";
+                        }
                         finalProduct item;
                         if (itemPerishable)
                         {
-                            string itemStock = "Onhand";
                             string itemCategory = "Perishable";
                             item = new finalProduct(itemName, itemPrice, itemquantity, itemId, itemStock, itemCategory);
                         }
                         else if (!itemPerishable)
                         {
-                            string itemStock = "Warehouse";
                             string itemCategory = "Non-perishable";
                             item = new finalProduct(itemName, itemPrice, itemquantity, itemId, itemStock, itemCategory);
                         }
