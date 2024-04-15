@@ -107,7 +107,7 @@ class Sys
 
             while (true)
             {
-                Console.Write("Choose what to edit:\n[1] Name\n[2] Quantity\n[3] Price\nEnter choice:");
+                Console.Write("Choose what to edit:\n[1] Name\n[2] Quantity\n[3] Price\n[4] Stock\n[5] Category\nEnter choice:");
                 int choice = Convert.ToInt32(Console.ReadLine());
 
                 for (int i = 0; i < lines.Length; i++)
@@ -120,6 +120,7 @@ class Sys
                             case 1:
                                 Console.Write("Enter new name:");
                                 string n = Console.ReadLine();
+                                n = n.ToUpper();
                                 lines[i] = $"{n},{values[1]},{values[2]},{id},{values[4]},{values[5]}";
                                 break;
                             case 2:
@@ -131,6 +132,39 @@ class Sys
                                 Console.Write("Enter new price:");
                                 double p = Convert.ToDouble(Console.ReadLine());
                                 lines[i] = $"{values[0]},{values[1]},{p},{id},{values[4]},{values[5]}";
+                                break;
+                            case 4:
+                                Console.Write("Stock([1] Onhand[2] Warehouse):");
+                                int s = Convert.ToInt32(Console.ReadLine());
+                                string its = "";
+                                if (s == 1)
+                                {
+                                    its = "Onhand";
+                                }
+                                else if (s == 2)
+                                {
+                                    its = "Warehouse";
+                                }
+                                lines[i] = $"{values[0]},{values[1]},{values[2]},{id},{its},{values[5]}";
+                                break;
+                            case 5:
+                                Console.Write("Is it perishable? (true/false):");
+                                bool cate = Convert.ToBoolean(Console.ReadLine());
+                                string cp = "";
+                                if (cate)
+                                {
+                                    cp = "Perishable";
+                                }
+                                else if (!cate)
+                                {
+                                    cp = "Non-perishable";
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Input");
+                                    break;
+                                }
+                                lines[i] = $"{values[0]},{values[1]},{values[2]},{id},{values[4]},{cp}";
                                 break;
                             default:
                                 Console.WriteLine("Invalid input");
@@ -402,6 +436,7 @@ class Program
                         int rawStock = PromptForItemDetails("Stock([1] Onhand [2] Warehouse): ", int.Parse);
                         bool itemPerishable = PromptForItemDetails("Is it perishable? (true/false): ", bool.Parse);
                         string itemStock = "";
+                        itemName = itemName.ToUpper();
                         if (rawStock == 1)
                         {
                             itemStock = "Onhand";
