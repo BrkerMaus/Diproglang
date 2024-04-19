@@ -3,13 +3,16 @@ using System;
 using System.IO;
 using System.Linq;
 
+// Define a Product class to represent products in inventory
 public class Product
 {
-    public string Name { get; set; }
-    public double Price { get; set; }
-    public int Quantity { get; set; }
-    public int ID { get; set; }
+    // Properties of a product
+    public string Name { get; set; } // Name of the product
+    public double Price { get; set; } // Price of the product
+    public int Quantity { get; set; } // Quantity of the product
+    public int ID { get; set; } // Unique ID of the product
 
+    // Constructor to initialize product properties
     public Product(string name, double price, int quantity, int id)
     {
         Name = name;
@@ -18,7 +21,7 @@ public class Product
         ID = id;
     }
 
-    // Display product info
+    // Function to display product information
     public virtual void DisplayProductInfo()
     {
         Console.WriteLine($"Product Name: {Name}");
@@ -28,17 +31,21 @@ public class Product
     }
 }
 
+// Define a finalProduct class that inherits from the Product class to handle products with supplementary attributes.
 public class finalProduct : Product
 {
-    public string Stock { get; set; }
-    public string Perishable { get; set; }
+    // Additional properties for the finalProduct
+    public string Stock { get; set; } // Stock status of the product(Onhand, Warehouse)
+    public string Perishable { get; set; } // Indicates whether the product is perishable or not
 
+    // Constructor to initialize additional properties along with base properties
     public finalProduct(string name, double price, int quantity, int id, string stock, string perishable) : base(name, price, quantity, id)
     {
         Stock = stock;
         Perishable = perishable;
     }
 
+    // Override method to display product information including additional properties
     public override void DisplayProductInfo()
     {
         base.DisplayProductInfo();
@@ -47,10 +54,13 @@ public class finalProduct : Product
     }
 }
 
+// Define a class to handle the inventory and file operations
 class Sys
 {
+    // Directory leading to the base file location
     private const string filePath = "C:\\Users\\Public\\Documents\\Convenience_Store_Inventory_Management_System.csv";
 
+    // Method to check if CSV file exists, if the CSV file does not exist it creates the file
     public static void csvChecker(string i)
     {
         if (!File.Exists(i))
@@ -65,6 +75,8 @@ class Sys
             }
         }
     }
+
+    // Method to add an item by a new finalProduct to inventory 
     public static void addItem(finalProduct item)
     {
         try
@@ -82,6 +94,7 @@ class Sys
         }
     }
 
+    // Method to modify details of an item in inventory based on its ID
     public static void editItem(int id)
     {
         try
@@ -189,7 +202,7 @@ class Sys
         }
     }
 
-
+    // Method to remove an item from inventory
     public static void removeItem(int id)
     {
         try
@@ -223,6 +236,7 @@ class Sys
         }
     }
 
+    // Method to display the inventory
     public static void showInv()
     {
         try
@@ -285,6 +299,7 @@ class Sys
         }
     }
 
+    // Method to check for duplicate item ID
     public static bool dupCheck(int id)
     {
         try
@@ -310,15 +325,19 @@ class Sys
     }
 }
 
+// Abstract class representing a menu
 abstract class Menu
 {
     public abstract void DisplayMenu();
 }
 
+// Class representing the store menu
 class StoreMenu : Menu
 {
+    // Method to display the store menu
     public override void DisplayMenu()
-    {   //Action Prompts
+    {   
+        //Action Prompts
         Console.WriteLine("\n\tConvenience Store Inventory Management System");
         Console.WriteLine("======================================================");
         Console.WriteLine("[1] Add Item");
@@ -330,8 +349,10 @@ class StoreMenu : Menu
     }
 }
 
+// Class representing the login menu
 class LoginMenu : Menu
-{   //Login Prompt
+{   
+    //Login Prompt
     public override void DisplayMenu()
     {
         Console.WriteLine("\n\tLogin Menu");
@@ -342,6 +363,7 @@ class LoginMenu : Menu
     }
 }
 
+// Main program class
 class Program
 {
     public static void Main(string[] args)
